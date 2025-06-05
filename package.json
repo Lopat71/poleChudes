@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://lopat71.github.io/poleChudes",
+  "homepage": "https://Lopat71.github.io/poleChudes",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-
+import bgImage from "../assets/bg.jpg";
 export const AppContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  background-image: url("/2025-06-05 22.08.07.jpg"); /* Картинка должна быть в папке public */
+  background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
