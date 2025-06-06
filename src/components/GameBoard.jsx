@@ -1,7 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Board, CardWrapper, Front, Back, RoundTitle } from "../styles/styles";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Board,
+  CardWrapper,
+  Front,
+  Back,
+  RoundTitle,
+  TitleWrapper,
+} from "../styles/styles";
 
-const ROUNDS = ["МОРКОВЬ", "КАЛЫМА", "ЛЕША", "ГЕНОФОНД"];
+import pravilnaySound from "../assets/sounds/pravilnayBukva.mp3";
+import nePravilnSound from "../assets/sounds/nePraviln.mp3";
+import ugadalSlovoSound from "../assets/sounds/ugadalSlovo.mp3";
+
+const ROUNDS = ["ФЕРЗЬ", "БЕРЕГИНЯ", "КУБЫШКА", "ВЫКАТКА", "ЗУМФАТИГ"];
 
 export default function GameBoard() {
   const [currentRound, setCurrentRound] = useState(0);
@@ -9,9 +20,14 @@ export default function GameBoard() {
   const word = ROUNDS[currentRound];
   const letters = word.split("");
 
+  // Используем useRef, чтобы не пересоздавать Audio на каждый ререндер
+  const correctAudio = useRef(new Audio(pravilnaySound));
+  const wrongAudio = useRef(new Audio(nePravilnSound));
+  const winAudio = useRef(new Audio(ugadalSlovoSound));
+
   useEffect(() => {
     setFlipped(Array(letters.length).fill(false));
-  }, [letters.length]);
+  }, [currentRound]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -22,19 +38,51 @@ export default function GameBoard() {
       } else if (key === "ARROWLEFT") {
         setCurrentRound((prev) => Math.max(prev - 1, 0));
       } else if (key.length === 1 && /[А-ЯЁ]/.test(key)) {
-        setFlipped((prev) =>
-          prev.map((f, i) => f || letters[i].toUpperCase() === key)
-        );
+        const indices = letters
+          .map((char, i) => (char.toUpperCase() === key ? i : -1))
+          .filter((i) => i !== -1 && !flipped[i]);
+
+        if (indices.length > 0) {
+          indices.forEach((index, i) => {
+            setTimeout(() => {
+              correctAudio.current.currentTime = 0;
+              correctAudio.current.play();
+
+              setFlipped((prev) => {
+                const updated = [...prev];
+                updated[index] = true;
+
+                // Если это последняя буква и всё открыто
+                const willBeAllOpen =
+                  updated.filter(Boolean).length === letters.length;
+
+                if (willBeAllOpen) {
+                  setTimeout(() => {
+                    winAudio.current.currentTime = 0;
+                    winAudio.current.play();
+                  }, 600); // задержка после flip анимации
+                }
+
+                return updated;
+              });
+            }, i * 1000);
+          });
+        } else {
+          wrongAudio.current.currentTime = 0;
+          wrongAudio.current.play();
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [letters]);
+  }, [letters, flipped]);
 
   return (
     <>
-      <RoundTitle>Раунд {currentRound + 1}</RoundTitle>
+      <TitleWrapper>
+        <RoundTitle>Раунд {currentRound + 1}</RoundTitle>
+      </TitleWrapper>
       <Board $letterCount={letters.length}>
         {letters.map((letter, index) => (
           <CardWrapper key={index} flipped={flipped[index]}>

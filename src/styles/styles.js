@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import bgImage from "../assets/bg.jpg";
+
 export const AppContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -12,6 +13,38 @@ export const AppContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
+`;
+
+export const TitleWrapper = styled.div`
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+`;
+
+export const RoundTitle = styled.h2`
+  font-size: 150px;
+  font-weight: 900;
+  color: #ffe600;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  animation: fadeInSlide 0.8s ease-out;
+
+  @keyframes fadeInSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 export const Board = styled.div`
@@ -52,16 +85,4 @@ export const Back = styled(Card)`
   background-color: #ffffff;
   color: #000000;
   transform: rotateY(180deg);
-`;
-
-// в src/styles/styles.js добавь
-export const RoundTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 900; /* жирнее */
-  color: #fff; /* белый цвет */
-  margin-bottom: 20px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7); /* для читаемости на фоне */
 `;
