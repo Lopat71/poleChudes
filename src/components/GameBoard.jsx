@@ -20,7 +20,6 @@ export default function GameBoard() {
   const word = ROUNDS[currentRound];
   const letters = word.split("");
 
-  // Используем useRef, чтобы не пересоздавать Audio на каждый ререндер
   const correctAudio = useRef(new Audio(pravilnaySound));
   const wrongAudio = useRef(new Audio(nePravilnSound));
   const winAudio = useRef(new Audio(ugadalSlovoSound));
@@ -52,7 +51,6 @@ export default function GameBoard() {
                 const updated = [...prev];
                 updated[index] = true;
 
-                // Если это последняя буква и всё открыто
                 const willBeAllOpen =
                   updated.filter(Boolean).length === letters.length;
 
@@ -60,7 +58,7 @@ export default function GameBoard() {
                   setTimeout(() => {
                     winAudio.current.currentTime = 0;
                     winAudio.current.play();
-                  }, 600); // задержка после flip анимации
+                  }, 600);
                 }
 
                 return updated;
@@ -85,7 +83,11 @@ export default function GameBoard() {
       </TitleWrapper>
       <Board $letterCount={letters.length}>
         {letters.map((letter, index) => (
-          <CardWrapper key={index} flipped={flipped[index]}>
+          <CardWrapper
+            key={index}
+            flipped={flipped[index]}
+            $letterCount={letters.length}
+          >
             <Front>{letter}</Front>
             <Back>{letter}</Back>
           </CardWrapper>

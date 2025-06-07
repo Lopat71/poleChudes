@@ -14,6 +14,7 @@ export const AppContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
 `;
 
 export const TitleWrapper = styled.div`
@@ -26,7 +27,7 @@ export const TitleWrapper = styled.div`
 `;
 
 export const RoundTitle = styled.h2`
-  font-size: 150px;
+  font-size: clamp(48px, 10vw, 150px);
   font-weight: 900;
   color: #ffe600;
   margin: 0;
@@ -49,17 +50,26 @@ export const RoundTitle = styled.h2`
 
 export const Board = styled.div`
   display: grid;
-  grid-template-columns: repeat(${({ $letterCount }) => $letterCount}, 60px);
-  gap: 10px;
+  grid-template-columns: repeat(${({ $letterCount }) => $letterCount}, 1fr);
+  gap: ${({ $letterCount }) => `${Math.max(2, 8 - $letterCount)}vw`};
+  padding: 2vw;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  justify-items: center;
 `;
 
 export const CardWrapper = styled.div`
-  width: 60px;
-  height: 80px;
+  width: min(18vw, 240px);
+  aspect-ratio: 3 / 4;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s;
   transform: ${({ flipped }) => (flipped ? "rotateY(180deg)" : "none")};
+
+  @media (min-width: 1600px) {
+    width: min(16vw, 300px);
+  }
 `;
 
 export const Card = styled.div`
@@ -70,10 +80,11 @@ export const Card = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  font-weight: bold;
-  border: 2px solid #000;
-  border-radius: 8px;
+  font-size: clamp(60px, 10vw, 180px);
+  font-weight: 900;
+  border: 5px solid #000;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 `;
 
 export const Front = styled(Card)`
