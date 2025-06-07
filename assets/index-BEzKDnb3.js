@@ -89,16 +89,17 @@ Error generating stack: `+e.message+`
     }
   }
 `,Qv=ae.div`
-  display: grid;
-  grid-template-columns: repeat(${({$letterCount:c})=>c}, 1fr);
-  gap: ${({$letterCount:c})=>`${Math.max(2,8-c)}vw`};
+  display: flex;
+  gap: 40px;
+  justify-content: center;
   padding: 2vw;
   width: 100%;
   max-width: 100vw;
   box-sizing: border-box;
   justify-items: center;
+  overflow: hidden;
 `,Zv=ae.div`
-  width: min(18vw, 240px);
+  width: min(calc(90vw / ${({$letterCount:c})=>c}), 200px);
   aspect-ratio: 3 / 4;
   position: relative;
   transform-style: preserve-3d;
@@ -106,7 +107,7 @@ Error generating stack: `+e.message+`
   transform: ${({flipped:c})=>c?"rotateY(180deg)":"none"};
 
   @media (min-width: 1600px) {
-    width: min(16vw, 300px);
+    width: min(calc(80vw / ${({$letterCount:c})=>c}), 600px);
   }
 `,lh=ae.div`
   width: 100%;
@@ -116,11 +117,12 @@ Error generating stack: `+e.message+`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(60px, 10vw, 180px);
+  font-size: clamp(6vw, 10vw, 10vh);
   font-weight: 900;
   border: 5px solid #000;
   border-radius: 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
 `,Vv=ae(lh)`
   background-color: #0066cc;
   color: transparent;
