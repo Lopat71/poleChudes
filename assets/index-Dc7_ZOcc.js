@@ -117,7 +117,7 @@ Error generating stack: `+e.message+`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(6vw, 10vw, 10vh);
+  font-size: clamp(8vw, 12vw, 14vh);
   font-weight: 900;
   border: 5px solid #000;
   border-radius: 20px;
